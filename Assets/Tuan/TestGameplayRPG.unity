@@ -434,7 +434,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 384797273}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.1256182, y: -0.000008583847, z: 0.0000010868972, w: 0.99207866}
+  m_LocalRotation: {x: 0.1256182, y: -0.000008548656, z: 0.0000010824411, w: 0.99207866}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -785,7 +785,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1088063502}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.10257246, y: -0.00000862388, z: 0.000000889263, w: 0.9947255}
+  m_LocalRotation: {x: 0.102572456, y: -0.0000085543315, z: 0.0000008820913, w: 0.9947255}
   m_LocalPosition: {x: 0.000022450087, y: 0.008000046, z: -1.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1555,7 +1555,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1507324676}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.10257246, y: -0.000008605703, z: 0.0000008873886, w: 0.9947255}
+  m_LocalRotation: {x: 0.102572456, y: -0.000008570929, z: 0.0000008838029, w: 0.9947255}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1751,16 +1751,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 9c5690fb0bb6db547b841491a888ed97, type: 2}
+      objectReference: {fileID: 9100000, guid: 4d8df5b2d45bf4a419ff05f82d8b4e3e, type: 2}
     - target: {fileID: 6573751121874269489, guid: 74cba210f6b556b4ab4f3b4d458e8a57,
         type: 3}
       propertyPath: m_WarningMessage
-      value: "\nBinding warning: Some generic clip(s) animate transforms that are
-        already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'calf_l'\n\tTransform 'pelvis'\n\tTransform
-        'calf_r'\n\tTransform 'lowerarm_l'\n\tTransform 'neck_01'\n\tTransform 'clavicle_l'\n\tTransform
-        'hand_l'\n\tTransform 'spine_02'\n\tTransform 'upperarm_r'\n\tTransform 'upperarm_l'\n\tand
-        more ...\n\tFrom animation clip 'idle'\n\tFrom animation clip 'running'"
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6573751121874269489, guid: 74cba210f6b556b4ab4f3b4d458e8a57,
         type: 3}
