@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 public enum StateAnim
@@ -8,13 +7,16 @@ public enum StateAnim
     Slash,
     Slash2,
     Slashing,
-    Slashing2
+    Slashing2,
+    OnHit,
 }
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float rotateSpeed;
     [SerializeField] private AnimationCurve curve;
+    [SerializeField] private GameObject sword;
+    [SerializeField] private PlayerSO playerSO;
 
     private InputGameAction inputActions;
     private Animator animator;
@@ -25,6 +27,12 @@ public class PlayerController : MonoBehaviour
     private bool shiftRun;
     private bool slash;
     private float currentSpeed;
+
+    // Info
+    [SerializeField, ReadOnly] private int currentHealth;
+    private int currentStamina;
+    private int damage;
+    public int Damage => damage;
 
     private void OnEnable()
     {
@@ -40,7 +48,14 @@ public class PlayerController : MonoBehaviour
     {
         inputActions = new InputGameAction();
         animator = GetComponent<Animator>();
-        currentState = StateAnim.Normal;
+        SwitchStateAnim(StateAnim.Normal);
+        sword = GetComponentInChildren<HitController>().gameObject;
+    }
+
+    private void Start()
+    {
+        currentHealth = playerSO.MaxHealth;
+        damage = playerSO.Damage;
     }
 
     private void Update()
@@ -73,7 +88,7 @@ public class PlayerController : MonoBehaviour
                 }
             case StateAnim.Slashing:
                 {
-                    if (animator.GetCurrentAnimatorStateInfo(1).normalizedTime > 0.6f && animator.GetCurrentAnimatorStateInfo(1).normalizedTime < 0.9f)
+                    if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.6f && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.9f)
                     {
                         if (slash)
                         {
@@ -88,6 +103,10 @@ public class PlayerController : MonoBehaviour
                     break;
                 }
             case StateAnim.Slashing2:
+                {
+                    break;
+                }
+            case StateAnim.OnHit:
                 {
                     break;
                 }
@@ -115,17 +134,21 @@ public class PlayerController : MonoBehaviour
                 }
             case StateAnim.Slash2:
                 {
-                    if (animator.GetCurrentAnimatorStateInfo(1).normalizedTime > 0.6f && animator.GetCurrentAnimatorStateInfo(1).normalizedTime < 0.9f)
+                    if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.6f && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.9f)
                     {
                         animator.SetTrigger("Slash2");
                     }
-                    break; 
+                    break;
                 }
             case StateAnim.Slashing2:
                 {
                     break;
                 }
-
+            case StateAnim.OnHit:
+                {
+                    animator.SetTrigger("OnHit");
+                    break;
+                }
         }
     }
 
@@ -169,4 +192,18 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("Speed", curve.Evaluate(currentSpeed));
     }
 
+    public void EnableCollider()
+    {
+        sword.GetComponent<BoxCollider>().enabled = true;
+    }
+
+    public void DisableCollider()
+    {
+        sword.GetComponent<BoxCollider>().enabled = false;
+    }
+
+    public void ReceiveDamage(int damage)
+    {
+        currentHealth -= damage;
+    }
 }
