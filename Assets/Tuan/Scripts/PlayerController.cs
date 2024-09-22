@@ -9,7 +9,8 @@ public enum StateAnim
     Slashing,
     Slashing2,
     OnHit,
-    OnDead
+    OnDead,
+    BlockMove
 }
 
 public class PlayerController : MonoBehaviour
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
     private bool shiftRun;
     private bool slash;
     private float currentSpeed;
+    private bool hasMove;
 
     private HealthSystem healthSystem;
     private StaminaSystem staminaSystem;
@@ -68,6 +70,7 @@ public class PlayerController : MonoBehaviour
     {
         //currentHealth = playerSO.MaxHealth;
         damage = playerSO.Damage;
+        hasMove = false;
     }
 
     private void Update()
@@ -75,6 +78,11 @@ public class PlayerController : MonoBehaviour
         SetInput();
         movement = new Vector3(inputPlayer.x, 0f, inputPlayer.y);
         movement.Normalize();
+
+        if (!hasMove)
+        {
+            SwitchStateAnim(StateAnim.BlockMove);
+        }
 
         StateMachine();
     }
@@ -126,6 +134,10 @@ public class PlayerController : MonoBehaviour
                 {
                     break;  
                 }
+            case StateAnim.BlockMove:
+                {
+                    break;
+                }
         }
     }
 
@@ -170,6 +182,10 @@ public class PlayerController : MonoBehaviour
                     animator.SetTrigger("OnDead");
                     break;  
                 }
+            case StateAnim.BlockMove:
+                {
+                    break;
+                }
         }
     }
 
@@ -177,15 +193,7 @@ public class PlayerController : MonoBehaviour
     {
         inputPlayer = inputActions.Character.Move.ReadValue<Vector2>();
         shiftRun = inputActions.Character.Run.IsPressed();
-        if (Input.GetMouseButtonDown(0))
-        {
-            slash = true;
-        }
-        else
-        {
-            slash = false;
-        }
-        //slash = inputActions.Character.Slash.IsPressed();
+        slash = inputActions.Character.Slash.triggered;
     }
 
     private void Movement()
@@ -222,7 +230,6 @@ public class PlayerController : MonoBehaviour
     {
         sword.GetComponent<BoxCollider>().enabled = false;
     }
-
 
     // Health System
     private void HealthSystem_OnDamagePlayer(object sender, System.EventArgs e)
