@@ -26,6 +26,8 @@ public class EnemyController : MonoBehaviour
     private HealthSystem healthSystem;
     private StaminaSystem staminaSystem;
     private PlayerStatSystem playerStatSystem;
+    [SerializeField]
+    private Transform playerT;
 
     // Info
     private int damage;
@@ -62,6 +64,17 @@ public class EnemyController : MonoBehaviour
 
         damage = enemySO.Damage;
     }
+    private void FixedUpdate()
+    {
+        float distance = Vector3.Distance(playerT.position, transform.position);
+        if (distance < 5)
+        {
+            if (Vector3.Dot(transform.forward.normalized, playerT.position - transform.position) > 0.7)
+            {
+                hasDetect = true;
+            }
+        }
+    }
 
     private void Update()
     {
@@ -83,10 +96,9 @@ public class EnemyController : MonoBehaviour
                 }
             case StateEnemy.Chasing:
                 {
-                    Vector3 newRotateDirection = targetTransform.position - transform.position;
+                    Vector3 newRotateDirection = playerT.position - transform.position;
                     Quaternion toRotation = Quaternion.LookRotation(newRotateDirection);
                     transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotateSpeed);
-                    agent.SetDestination(targetTransform.position);
 
                     animator.SetBool("Chase", true);
 
@@ -115,7 +127,7 @@ public class EnemyController : MonoBehaviour
     public void SwitchStateEnemy(StateEnemy newStateEnemy)
     {
         currentStateEnemy = newStateEnemy;
-        agent.isStopped = true;
+        agent.SetDestination(transform.position);
 
         switch (currentStateEnemy)
         {
@@ -125,7 +137,7 @@ public class EnemyController : MonoBehaviour
                 }
             case StateEnemy.Chasing:
                 {
-                    agent.isStopped = false;
+                    agent.SetDestination(playerT.position);
                     break;
                 }
             case StateEnemy.Attack:
@@ -146,26 +158,25 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            hasDetect = true;
-            targetTransform = other.gameObject.transform;
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.CompareTag("Player"))
+    //    {
+    //        hasDetect = true;
+    //        targetTransform = other.gameObject.transform;
+    //    }
+    //}
 
     public void EnableCollider()
     {
         sword.GetComponent<BoxCollider>().enabled = true;
     }
-
     public void DisableCollider()
     {
         sword.GetComponent<BoxCollider>().enabled = false;
     }
 
-
+    
     // Health System
     private void HealthSystem_OnDamageEnemy(object sender, System.EventArgs e)
     {
