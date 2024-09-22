@@ -4,6 +4,7 @@ using UnityEngine;
 public class FireTraceController : MonoBehaviour
 {
     public bool CanDamage = true;
+    public int Damage = 10;
 
     private void OnTriggerStay(Collider other)
     {
@@ -12,7 +13,7 @@ public class FireTraceController : MonoBehaviour
             if (CanDamage)
             {
                 // Damage
-
+                other.GetComponent<PlayerStatSystem>().TakeDamage(Damage);
                 StartCoroutine(CanDamageAfter(0.5f));
             }
         }

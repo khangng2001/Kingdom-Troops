@@ -22,5 +22,10 @@ public class HitController : MonoBehaviour
             }
             getHealthSystem.TakeDamage(playerController.Damage);
         }
+
+        if (other.CompareTag("Boss"))
+        {
+            other.GetComponentInParent<DragonController>().TakeDamage(playerController.Damage);
+        }
     }
 }

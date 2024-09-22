@@ -5,7 +5,7 @@ public class FireBallController : MonoBehaviour
     public DragonFire DragonFire;
 
     public float Speed;
-    public float Damage;
+    public int Damage = 10;
 
     public float TimeBeforeDeactive;
     public float TimeRunning;
@@ -32,6 +32,7 @@ public class FireBallController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             // Give Damage To Player
+            other.GetComponent<PlayerStatSystem>().TakeDamage(Damage);
         }
         else
         {
