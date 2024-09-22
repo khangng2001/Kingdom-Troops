@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
 public class DataManager : MonoBehaviour
@@ -37,10 +34,11 @@ public class DataManager : MonoBehaviour
         {
             if (gameData == null)
             {
-                if (File.Exists(StringConstants.GAME_DATA_FILENAME))
+                gameData = JsonDataHandler.ReadFromJson<GameData>(StringConstants.GAME_DATA_FILENAME);
+                /*if (File.Exists(StringConstants.GAME_DATA_FILENAME))
                     gameData = JsonDataHandler.ReadFromJson<GameData>(StringConstants.GAME_DATA_FILENAME);
                 else
-                    Debug.Log("GameData not found! Start a new game");
+                    Debug.Log("GameData not found! Start a new game");*/
             }
         }
         catch (Exception e)

@@ -23,17 +23,18 @@ public class MainSceneUIManager : MonoBehaviour
         });
 
         if (GameManager.Instance.GameData == null) return;
-        if (GameManager.Instance.GameData.AppOpenCounts <= 1)
+        if (GameManager.Instance.GameData.NotPlayedEver)
         {
             continueBtn.gameObject.SetActive(false);
         }
     }
 
-
     private void PlayNewGame()
     {
         //Reset All Data
         GameManager.Instance.GameData.Reset();
+
+        GameManager.Instance.GameData.UpdateNotPlayedEver(false);
 
         //Load PlayScene
         //SceneLoader.LoadScene(GameManager.Instance.GameData.CurLevelMap, "");
@@ -48,11 +49,11 @@ public class MainSceneUIManager : MonoBehaviour
     {
         //Load PlayScene
         //SceneLoader.LoadScene(GameManager.Instance.GameData.CurLevelMap, "");
-        GameSceneLoading.Instance.LoadChildGame(GameManager.Instance.GameData.CurLevelMap, () =>
+        StartCoroutine(GameSceneLoading.Instance.LoadChildGame(GameManager.Instance.GameData.CurLevelMap, () =>
         {
             //Play Music in GamePlay
             Debug.Log(">>Play GamePlay music");
-        });
+        }));
     }
 
     private void ExitGame()

@@ -32,6 +32,7 @@ public class CharacterStat
 public class GameData
 {
     public int AppOpenCounts = 0;
+    public bool NotPlayedEver = true;
 
     public string CurLevelMap = "";
     public string CurWeaponEquip = "";
@@ -44,7 +45,10 @@ public class GameData
     public void Init()
     {
         if (AppOpenCounts <= 0)
+        {
             Reset();
+            NotPlayedEver = true;
+        }
 
         AppOpenCounts++;
 
@@ -94,6 +98,13 @@ public class GameData
     #endregion
 
     #region OTHERS
+
+    public void UpdateNotPlayedEver(bool b)
+    {
+        NotPlayedEver = b;
+
+        DataManager.Instance.SaveGame();
+    }
 
     public void UpdateCurWeaponEquip(string curWeaponEquip)
     {
