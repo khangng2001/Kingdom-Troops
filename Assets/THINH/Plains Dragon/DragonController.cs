@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Playables;
 
 public enum DragonState
 {
@@ -38,6 +39,8 @@ public class DragonController : MonoBehaviour
     public float MaxHealth;
     public float Health;
 
+    public PlayableDirector EndPlayable;
+
     private void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -57,6 +60,11 @@ public class DragonController : MonoBehaviour
             {
                 DragonFire.Head.transform.rotation = Quaternion.LookRotation(Quaternion.Euler(0, -90, 0) * directionToPlayer, -Vector3.up);
             }
+        }
+
+        if (Health <= -0)
+        {
+            ChangeState(DragonState.Die);
         }
 
         switch (_state)
@@ -86,7 +94,7 @@ public class DragonController : MonoBehaviour
         _state = state;
         _animator.SetInteger("State", (int)_state);
 
-        // Last Time
+        // First Time
         switch (_state)
         {
             case DragonState.Ground:
@@ -95,7 +103,8 @@ public class DragonController : MonoBehaviour
                 _animator.SetBool("IsRest", false);
                 break;
             case DragonState.Die:
-                this.enabled = true;
+                EndPlayable.Play();
+                this.enabled = false;
                 break;
         }
     }
