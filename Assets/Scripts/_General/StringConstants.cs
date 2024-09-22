@@ -5,6 +5,7 @@ public static class StringConstants
 
     public const string MAIN = "Main";
     public const string LOADING = "Loading";
+    public const string BATTLEMAINGAME = "BattleMainGame";
     public const string LEVEL_01 = "Level_01";
     public const string LEVEL_02 = "Level_02";
     public const string LEVEL_03 = "Level_03";

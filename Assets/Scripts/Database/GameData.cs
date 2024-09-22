@@ -57,7 +57,7 @@ public class GameData
 
     public void Reset()
     {
-        CurLevelMap = StringConstants.LEVEL_01;
+        CurLevelMap = StringConstants.BATTLEMAINGAME;
         CurWeaponEquip = "";
 
         Potions.Clear();

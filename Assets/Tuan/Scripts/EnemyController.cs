@@ -19,7 +19,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private EnemySO enemySO;
 
     private bool hasDetect;
-    private Transform targetTransform;
+    //privatet targetTransform;
     private Animator animator;
     private NavMeshAgent agent;
 
@@ -49,6 +49,8 @@ public class EnemyController : MonoBehaviour
 
     private void Awake()
     {
+        playerT = GameObject.FindGameObjectWithTag("Player").transform;
+
         healthSystem = new HealthSystem(enemySO.MaxHealth);
         playerStatSystem = GetComponent<PlayerStatSystem>();
         playerStatSystem.GetData(healthSystem, staminaSystem);
@@ -99,10 +101,11 @@ public class EnemyController : MonoBehaviour
                     Vector3 newRotateDirection = playerT.position - transform.position;
                     Quaternion toRotation = Quaternion.LookRotation(newRotateDirection);
                     transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotateSpeed);
+                    agent.SetDestination(playerT.position);
 
                     animator.SetBool("Chase", true);
 
-                    if (Physics.Raycast(transform.position + new Vector3(0, 1, 0), transform.forward, 1.5f, mask))
+                    if (Physics.Raycast(transform.position + new Vector3(0, 1, 0), transform.forward, 1.0f, mask))
                     {
                         SwitchStateEnemy(StateEnemy.Attack);
                     }
@@ -137,7 +140,6 @@ public class EnemyController : MonoBehaviour
                 }
             case StateEnemy.Chasing:
                 {
-                    agent.SetDestination(playerT.position);
                     break;
                 }
             case StateEnemy.Attack:
