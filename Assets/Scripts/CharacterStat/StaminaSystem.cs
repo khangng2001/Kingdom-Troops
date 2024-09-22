@@ -94,7 +94,7 @@ public class StaminaSystem
                 {
                     if (logErrors)
                     {
-                        Debug.LogError($"Got HealthSystem from object but healthSystem is null! Should it have been created? Maybe you have an issue with the order of operations.");
+                        Debug.LogError($"Got StaminaSystem from object but staminaSystem is null! Should it have been created? Maybe you have an issue with the order of operations.");
                     }
                     return false;
                 }
@@ -103,7 +103,7 @@ public class StaminaSystem
             {
                 if (logErrors)
                 {
-                    Debug.LogError($"Referenced Game Object '{getStaminaSystemGameObject}' does not have a script that implements IGetHealthSystem!");
+                    Debug.LogError($"Referenced Game Object '{getStaminaSystemGameObject}' does not have a script that implements IGetStaminaSystem!");
                 }
                 return false;
             }
@@ -113,7 +113,7 @@ public class StaminaSystem
             // No reference assigned
             if (logErrors)
             {
-                Debug.LogError($"You need to assign the field 'getHealthSystemGameObject'!");
+                Debug.LogError($"You need to assign the field 'getStaminaSystemGameObject'!");
             }
             return false;
         }
