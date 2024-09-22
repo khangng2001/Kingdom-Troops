@@ -7,7 +7,8 @@ public enum StateEnemy
     Normal,
     Chasing,
     Attack,
-    OnHit
+    OnHit,
+    OnDead
 }
 
 public class EnemyController : MonoBehaviour
@@ -104,18 +105,22 @@ public class EnemyController : MonoBehaviour
                 {
                     break;
                 }
+            case StateEnemy.OnDead:
+                {
+                    break;
+                }
         }
     }
 
     public void SwitchStateEnemy(StateEnemy newStateEnemy)
     {
         currentStateEnemy = newStateEnemy;
+        agent.isStopped = true;
 
         switch (currentStateEnemy)
         {
             case StateEnemy.Normal:
                 {
-                    agent.isStopped = true;
                     break;
                 }
             case StateEnemy.Chasing:
@@ -125,15 +130,18 @@ public class EnemyController : MonoBehaviour
                 }
             case StateEnemy.Attack:
                 {
-                    agent.isStopped = true;
                     animator.SetTrigger("Attack");
                     break;
                 }
             case StateEnemy.OnHit:
                 {
-                    agent.isStopped = true;
                     animator.SetTrigger("OnHit");
                     break;
+                }
+            case StateEnemy.OnDead:
+                {
+                    animator.SetTrigger("OnDead");
+                    break;  
                 }
         }
     }
@@ -166,6 +174,6 @@ public class EnemyController : MonoBehaviour
 
     private void HealthSystem_OnDeadEnemy(object sender, System.EventArgs e)
     {
-        this.gameObject.SetActive(false);
+        SwitchStateEnemy(StateEnemy.OnDead);
     }
 }

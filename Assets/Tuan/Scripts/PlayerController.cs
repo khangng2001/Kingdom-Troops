@@ -9,6 +9,7 @@ public enum StateAnim
     Slashing,
     Slashing2,
     OnHit,
+    OnDead
 }
 
 public class PlayerController : MonoBehaviour
@@ -40,12 +41,14 @@ public class PlayerController : MonoBehaviour
     {
         this.inputActions.Enable();
         healthSystem.OnDamaged += HealthSystem_OnDamagePlayer;
+        healthSystem.OnDead += HealthSystem_OnDeadPlayer;
     }
 
     private void OnDisable()
     {
         this.inputActions.Disable();
         healthSystem.OnDamaged -= HealthSystem_OnDamagePlayer;
+        healthSystem.OnDead -= HealthSystem_OnDeadPlayer;
     }
 
     private void Awake()
@@ -119,6 +122,10 @@ public class PlayerController : MonoBehaviour
                 {
                     break;
                 }
+            case StateAnim.OnDead:
+                {
+                    break;  
+                }
         }
     }
 
@@ -157,6 +164,11 @@ public class PlayerController : MonoBehaviour
                 {
                     animator.SetTrigger("OnHit");
                     break;
+                }
+            case StateAnim.OnDead:
+                {
+                    animator.SetTrigger("OnDead");
+                    break;  
                 }
         }
     }
@@ -216,5 +228,10 @@ public class PlayerController : MonoBehaviour
     private void HealthSystem_OnDamagePlayer(object sender, System.EventArgs e)
     {
         SwitchStateAnim(StateAnim.OnHit);
+    }
+
+    private void HealthSystem_OnDeadPlayer(object sender, System.EventArgs e)
+    {
+        SwitchStateAnim(StateAnim.OnDead);
     }
 }
