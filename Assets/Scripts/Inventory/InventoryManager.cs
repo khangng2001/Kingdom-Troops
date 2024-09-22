@@ -27,7 +27,7 @@ public class InventoryManager : Singleton<InventoryManager>
     {
         InventoryUIManager.Instance.Hide();
 
-        gameData = DataManager.Instance.LoadGame();
+        gameData = GameManager.Instance.GameData;
 
         #region TEST
         foreach (InventoryItemSO item in potionSOs)

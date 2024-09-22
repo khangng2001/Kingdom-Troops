@@ -33,6 +33,7 @@ public class GameData
 {
     public int AppOpenCounts = 0;
 
+    public string CurLevelMap = "";
     public string CurWeaponEquip = "";
 
     public List<ItemDetail> Potions = new List<ItemDetail>();
@@ -52,6 +53,7 @@ public class GameData
 
     public void Reset()
     {
+        CurLevelMap = StringConstants.LEVEL_01;
         CurWeaponEquip = "";
 
         Potions.Clear();
@@ -96,6 +98,13 @@ public class GameData
     public void UpdateCurWeaponEquip(string curWeaponEquip)
     {
         CurWeaponEquip = curWeaponEquip;
+
+        DataManager.Instance.SaveGame();
+    }
+
+    public void UpdateCurLevelMap(string curLevelMap)
+    {
+        CurLevelMap = curLevelMap;
 
         DataManager.Instance.SaveGame();
     }
