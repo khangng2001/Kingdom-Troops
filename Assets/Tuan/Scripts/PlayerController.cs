@@ -1,4 +1,5 @@
 using Unity.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum StateAnim
@@ -70,7 +71,8 @@ public class PlayerController : MonoBehaviour
     {
         //currentHealth = playerSO.MaxHealth;
         damage = playerSO.Damage;
-        hasMove = false;
+
+        CanMove(true);
     }
 
     private void Update()
@@ -79,10 +81,10 @@ public class PlayerController : MonoBehaviour
         movement = new Vector3(inputPlayer.x, 0f, inputPlayer.y);
         movement.Normalize();
 
-        if (!hasMove)
-        {
-            SwitchStateAnim(StateAnim.BlockMove);
-        }
+        //if (!hasMove)
+        //{
+        //    SwitchStateAnim(StateAnim.BlockMove);
+        //}
 
         StateMachine();
     }
@@ -184,8 +186,23 @@ public class PlayerController : MonoBehaviour
                 }
             case StateAnim.BlockMove:
                 {
+                    animator.SetFloat("Speed", curve.Evaluate(0));
                     break;
                 }
+        }
+    }
+
+    public void CanMove(bool can)
+    {
+        hasMove = can;
+
+        if (!hasMove)
+        {
+            SwitchStateAnim(StateAnim.BlockMove);
+        }
+        else
+        {
+            SwitchStateAnim(StateAnim.Normal);
         }
     }
 

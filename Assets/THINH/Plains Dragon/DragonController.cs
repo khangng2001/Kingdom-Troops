@@ -39,7 +39,7 @@ public class DragonController : MonoBehaviour
     public float MaxHealth;
     public float Health;
 
-    public PlayableDirector EndPlayable;
+    public GameObject RangeActiveEnd;
 
     private void Awake()
     {
@@ -103,7 +103,7 @@ public class DragonController : MonoBehaviour
                 _animator.SetBool("IsRest", false);
                 break;
             case DragonState.Die:
-                EndPlayable.Play();
+                RangeActiveEnd.SetActive(true);
                 this.enabled = false;
                 break;
         }

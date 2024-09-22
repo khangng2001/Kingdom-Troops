@@ -6,6 +6,11 @@ public class FireTraceController : MonoBehaviour
     public bool CanDamage = true;
     public int Damage = 10;
 
+    private void OnEnable()
+    {
+        CanDamage = true;
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
