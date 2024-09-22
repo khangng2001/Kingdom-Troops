@@ -1,10 +1,10 @@
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public enum DragonState
 {
     Ground,
-    Fly
+    Die
 }
 public enum DragonGroundState
 {
@@ -13,13 +13,10 @@ public enum DragonGroundState
     Fire,
     Rest
 }
-public enum DragonSkyState
+public enum DragonDieState
 {
     Ready,
-    FlyToPoint,
-    FireInSky,
-    Landing,
-    Rest
+    Die
 }
 
 public class DragonController : MonoBehaviour
@@ -34,21 +31,24 @@ public class DragonController : MonoBehaviour
     [SerializeField] private float _speedRotateHead;
 
     [SerializeField] private DragonState _state;
+
     [SerializeField] private DragonGroundState _groundState;
-    [SerializeField] private DragonSkyState _skyState;
-
-    public float timeRunningReady;
-    public float timeMaxReady;
-
     public float timeRunningRest;
     public float timeMaxRest;
-    public Vector3 upward;
+
+    public float MaxHealth;
+    public float Health;
+
+    public PlayableDirector EndPlayable;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
         DragonFire = GetComponent<DragonFire>();
-        upward = DragonFire.Head.transform.up;
+
+        ChangeState(DragonState.Ground);
+
+        Health = MaxHealth;
     }
 
     void Update()
@@ -62,14 +62,49 @@ public class DragonController : MonoBehaviour
             }
         }
 
+        if (Health <= -0)
+        {
+            ChangeState(DragonState.Die);
+        }
 
         switch (_state)
         {
             case DragonState.Ground:
                 GroundState();
                 break;
-            case DragonState.Fly:
-                SkyState();
+            case DragonState.Die:
+                break;  
+        }
+    }
+
+    void ChangeState(DragonState state)
+    {
+        // Last Time
+        switch (_state)
+        {
+            case DragonState.Ground:
+                _animator.SetBool("IsReady", false);
+                _animator.SetBool("IsAttack", false);
+                _animator.SetBool("IsRest", false);
+                break;
+            case DragonState.Die:
+                break;
+        }
+
+        _state = state;
+        _animator.SetInteger("State", (int)_state);
+
+        // First Time
+        switch (_state)
+        {
+            case DragonState.Ground:
+                _animator.SetBool("IsReady", false);
+                _animator.SetBool("IsAttack", false);
+                _animator.SetBool("IsRest", false);
+                break;
+            case DragonState.Die:
+                EndPlayable.Play();
+                this.enabled = false;
                 break;
         }
     }
@@ -89,7 +124,6 @@ public class DragonController : MonoBehaviour
                     }
 
                     DragonFire.FireCount = 0;
-                    timeRunningReady = timeMaxReady;
                     _animator.SetBool("IsReady", true);
                     _groundState = DragonGroundState.Ready;
                 }
@@ -132,20 +166,14 @@ public class DragonController : MonoBehaviour
         }
     }
 
-    void SkyState()
+    public void TakeDamage(float damage)
     {
-        switch (_skyState)
+        Health -= damage;
+
+        if (Health <= 0) 
         {
-            case DragonSkyState.Ready:
-                break;
-            case DragonSkyState.FlyToPoint:
-                break;
-            case DragonSkyState.FireInSky:
-                break;
-            case DragonSkyState.Landing:
-                break;
-            case DragonSkyState.Rest:
-                break;
+            Health = 0;
+            ChangeState(DragonState.Die);
         }
     }
 }

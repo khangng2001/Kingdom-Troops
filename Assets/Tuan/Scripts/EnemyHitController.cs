@@ -13,14 +13,14 @@ public class EnemyHitController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        IGetHealthSystem getHealthSystem = other.GetComponent<IGetHealthSystem>();
+        if (getHealthSystem != null)
         {
-            if(other.GetComponent<PlayerController>())
-            {   
-                PlayerController playerController = other.GetComponent<PlayerController>();
-                playerController.SwitchStateAnim(StateAnim.OnHit);
-                playerController.ReceiveDamage(enemyController.Damage);
+            if (other.GetComponent<EnemyController>() == enemyController)
+            {
+                return;
             }
+            getHealthSystem.TakeDamage(enemyController.Damage);
         }
     }
 }

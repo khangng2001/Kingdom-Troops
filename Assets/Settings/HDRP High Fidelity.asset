@@ -36,7 +36,7 @@ MonoBehaviour:
     colorBufferFormat: 48
     supportCustomPass: 1
     customBufferFormat: 12
-    supportedLitShaderMode: 2
+    supportedLitShaderMode: 3
     planarReflectionResolution:
       m_Values: 000100000004000000080000
       m_SchemaId:
@@ -51,7 +51,8 @@ MonoBehaviour:
     decalNormalBufferHP: 0
     msaaSampleCount: 1
     supportMotionVectors: 1
-    supportRuntimeAOVAPI: 0
+    supportDataDrivenLensFlare: 1
+    supportRuntimeAOVAPI: 1
     supportDitheringCrossFade: 1
     supportTerrainHole: 0
     lightProbeSystem: 1
@@ -89,12 +90,12 @@ MonoBehaviour:
       maxDecalsOnScreen: 512
       maxLightsPerClusterCell: 16
       maxLocalVolumetricFogSize: 32
-      maxLocalVolumetricFogOnScreen: 64
+      maxLocalVolumetricFogOnScreen: 218
     hdShadowInitParams:
       maxShadowRequests: 128
       directionalShadowsDepthBits: 16
       shadowFilteringQuality: 2
-      areaShadowFilteringQuality: 0
+      areaShadowFilteringQuality: 1
       punctualLightShadowAtlas:
         shadowAtlasResolution: 4096
         shadowAtlasDepthBits: 16
@@ -182,7 +183,7 @@ MonoBehaviour:
       ChromaticAberrationMaxSamples: 03000000060000000c000000
     lightSettings:
       useContactShadow:
-        m_Values: 000101
+        m_Values: 010101
         m_SchemaId:
           m_Id: 
     maximumLODLevel:
@@ -197,12 +198,12 @@ MonoBehaviour:
       m_SchemaId:
         m_Id: With3Levels
     lightingQualitySettings:
-      AOStepCount: 040000000600000010000000
+      AOStepCount: 040000000600000014000000
       AOFullRes: 000001
       AOMaximumRadiusPixels: 200000002800000050000000
       AOBilateralUpsample: 000101
       AODirectionCount: 010000000200000004000000
-      ContactShadowSampleCount: 060000000a00000010000000
+      ContactShadowSampleCount: 060000000a00000018000000
       SSRMaxRaySteps: 100000002000000040000000
       SSGIRaySteps: 200000004000000080000000
       SSGIDenoise: 010101
@@ -216,7 +217,7 @@ MonoBehaviour:
       - 0.5
       - 3
       - 20
-      RTAOSampleCount: 010000000200000008000000
+      RTAOSampleCount: 010000000200000011000000
       RTAODenoise: 010101
       RTAODenoiserRadius:
       - 0.25
@@ -293,6 +294,8 @@ MonoBehaviour:
   diffusionProfileSettings: {fileID: 0}
   virtualTexturingSettings:
     streamingCpuCacheSizeInMegaBytes: 256
+    streamingMipPreloadTexturesPerFrame: 0
+    streamingPreloadMipCount: 1
     streamingGpuCacheSettings:
     - format: 0
       sizeInMegaBytes: 128
