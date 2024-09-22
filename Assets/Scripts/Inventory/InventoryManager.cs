@@ -15,13 +15,21 @@ public class InventoryManager : Singleton<InventoryManager>
     public List<InventoryItemSO> potionSOs = new List<InventoryItemSO>();
     public List<InventoryItemSO> waeponSOs = new List<InventoryItemSO>();
 
+
+    //Test DATA
+    public List<ItemDetail> potions = new List<ItemDetail>();
+    public List<ItemDetail> weapons = new List<ItemDetail>();
+
+    private GameData gameData;
     #endregion
 
     private void Start()
     {
         InventoryUIManager.Instance.Hide();
 
+        gameData = DataManager.Instance.LoadGame();
 
+        #region TEST
         foreach (InventoryItemSO item in potionSOs)
         {
             SpawnPotion(item, 3);
@@ -31,6 +39,7 @@ public class InventoryManager : Singleton<InventoryManager>
         {
             SpawnWeapon(item, 1);
         }
+        #endregion
     }
 
 
