@@ -12,8 +12,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Main.unity
     guid: 6d43f2c07a6aafa458e3c9a393daf651
   - enabled: 1
-    path: Assets/Tuan/BattleMainGame.unity
-    guid: 417e8891f16260f4a840cbbfb4a81d51
+    path: Assets/Tuan/SkyBattleScene.unity
+    guid: 5c19da854cdcee940aa1ca7615594e3d
   - enabled: 1
     path: Assets/Scenes/Level_01.unity
     guid: 3e4b109f7080a0b46bc49a8edc280bfb
