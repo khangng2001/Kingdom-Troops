@@ -3,80 +3,149 @@ using UnityEngine;
 
 public enum DragonState
 {
+    Ground,
+    Fly
+}
+public enum DragonGroundState
+{
     RunToPoint,
     Ready,
     Fire,
+    Rest
+}
+public enum DragonSkyState
+{
+    Ready,
+    FlyToPoint,
+    FireInSky,
+    Landing,
+    Rest
 }
 
 public class DragonController : MonoBehaviour
 {
     private Animator _animator;
 
-    [SerializeField] private Transform player;
+    public Transform Player;
+    public DragonFire DragonFire;
 
-    [SerializeField] private float _distance;
     [SerializeField] private float _speed;
     [SerializeField] private float _speedRotate;
+    [SerializeField] private float _speedRotateHead;
 
     [SerializeField] private DragonState _state;
+    [SerializeField] private DragonGroundState _groundState;
+    [SerializeField] private DragonSkyState _skyState;
 
-    [SerializeField] private List<Transform> FirePoint = new List<Transform>();
-    [SerializeField] private int indexPoint = 0;
-    public int FireCount = 0;
-    public int FireCountMax = 3;
-    public GameObject FireBall;
-    public Transform FireBallPoint;
+    public float timeRunningReady;
+    public float timeMaxReady;
+
+    public float timeRunningRest;
+    public float timeMaxRest;
+    public Vector3 upward;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
+        DragonFire = GetComponent<DragonFire>();
+        upward = DragonFire.Head.transform.up;
     }
 
     void Update()
     {
-        _distance = Vector3.Distance(transform.position, player.position);
+        // Look Player
+        {
+            Vector3 directionToPlayer = new Vector3(Player.position.x, 0, Player.position.z) - new Vector3(DragonFire.Head.transform.position.x, 0, DragonFire.Head.transform.position.z);
+            if (Vector3.Dot(-directionToPlayer, DragonFire.Head.transform.right) > 0)
+            {
+                DragonFire.Head.transform.rotation = Quaternion.LookRotation(Quaternion.Euler(0, -90, 0) * directionToPlayer, -Vector3.up);
+            }
+        }
 
 
         switch (_state)
         {
-            case DragonState.RunToPoint:
-                float distanceFromPoint = Vector3.Distance(transform.position, FirePoint[indexPoint].position);
+            case DragonState.Ground:
+                GroundState();
+                break;
+            case DragonState.Fly:
+                SkyState();
+                break;
+        }
+    }
+
+    void GroundState()
+    {
+        switch (_groundState)
+        {
+            case DragonGroundState.RunToPoint:
+                float distanceFromPoint = Vector3.Distance(transform.position, DragonFire.UseSkillFirePoint[DragonFire.IndexPoint].position);
                 if (distanceFromPoint <= 0.2f)
                 {
-                    indexPoint += 1;
-                    if (indexPoint == FirePoint.Count)
+                    DragonFire.IndexPoint += 1;
+                    if (DragonFire.IndexPoint == DragonFire.UseSkillFirePoint.Count)
                     {
-                        indexPoint = 0;
+                        DragonFire.IndexPoint = 0;
                     }
 
-                    FireCount = 0;
-                    _animator.SetBool("IsAttack", true);
-                    _state = DragonState.Fire;
+                    DragonFire.FireCount = 0;
+                    timeRunningReady = timeMaxReady;
+                    _animator.SetBool("IsReady", true);
+                    _groundState = DragonGroundState.Ready;
                 }
 
-                Vector3 directionToPoint = FirePoint[indexPoint].position - transform.position;
+                Vector3 directionToPoint = DragonFire.UseSkillFirePoint[DragonFire.IndexPoint].position - transform.position;
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(directionToPoint), Time.deltaTime * _speedRotate);
                 transform.position += transform.forward * Time.deltaTime * _speed;
 
                 break;
-            case DragonState.Ready:
-                break;
-            case DragonState.Fire:
-                Vector3 directionToPlayer = player.position - transform.position;
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(directionToPlayer), Time.deltaTime * _speedRotate);
-
-                if (FireCount >= FireCountMax)
+            case DragonGroundState.Ready:
                 {
+                    Vector3 directionToPlayer = Player.position - transform.position;
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(directionToPlayer), Time.deltaTime * _speedRotate);
+
+                    if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(directionToPlayer)) == 0)
+                    {
+                        _animator.SetBool("IsReady", false);
+                        _animator.SetBool("IsAttack", true);
+                        _groundState = DragonGroundState.Fire;
+                    }
+                }
+                break;
+            case DragonGroundState.Fire:
+                if (DragonFire.FireCount >= DragonFire.FireCountMax)
+                {
+                    timeRunningRest = timeMaxRest;
                     _animator.SetBool("IsAttack", false);
-                    _state = DragonState.RunToPoint;
+                    _animator.SetBool("IsRest", true);
+                    _groundState = DragonGroundState.Rest;
+                }
+                break;
+            case DragonGroundState.Rest:
+                timeRunningRest -= Time.deltaTime;
+                if (timeRunningRest <= 0)
+                {
+                    _animator.SetBool("IsRest", false);
+                    _groundState = DragonGroundState.RunToPoint;
                 }
                 break;
         }
     }
 
-    public void Fire()
+    void SkyState()
     {
-        Vector3 directionToPlayer = player.position - FireBallPoint.position;
-        GameObject fireBall = Instantiate(FireBall, FireBallPoint.position, Quaternion.LookRotation(directionToPlayer));
+        switch (_skyState)
+        {
+            case DragonSkyState.Ready:
+                break;
+            case DragonSkyState.FlyToPoint:
+                break;
+            case DragonSkyState.FireInSky:
+                break;
+            case DragonSkyState.Landing:
+                break;
+            case DragonSkyState.Rest:
+                break;
+        }
     }
 }

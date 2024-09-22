@@ -13,11 +13,13 @@ public class FireBallBehaviour : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (!isFire && stateInfo.normalizedTime >= 0.5f)
+        if (!isFire && stateInfo.normalizedTime >= 0.33f)
         {
             isFire = true;
-            DragonController dragon = animator.GetComponent<DragonController>();
-            dragon.Fire();
+            DragonController dragonControllder = animator.GetComponent<DragonController>();
+            DragonFire dragonFire = animator.GetComponent<DragonFire>();
+            dragonFire.Fire(dragonControllder.Player);
+            dragonFire.FireCount += 1;
         }
 
         //if (stateInfo.normalizedTime >= 1F)
@@ -31,9 +33,7 @@ public class FireBallBehaviour : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Debug.Log("oke");
-        DragonController dragon = animator.GetComponent<DragonController>();
-        dragon.FireCount += 1;
+        
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
