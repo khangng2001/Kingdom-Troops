@@ -22,16 +22,34 @@ public class EnemyController : MonoBehaviour
     private Animator animator;
     private NavMeshAgent agent;
 
+    private HealthSystem healthSystem;
+    private StaminaSystem staminaSystem;
+    private PlayerStatSystem playerStatSystem;
+
     // Info
-    [SerializeField] private int currentHealth;
-    private int currentStamina;
     private int damage;
     public int Damage => damage;
 
     private StateEnemy currentStateEnemy;
 
+    private void OnEnable()
+    {
+        healthSystem.OnDamaged += HealthSystem_OnDamageEnemy;
+        healthSystem.OnDead += HealthSystem_OnDeadEnemy;
+    }
+
+    private void OnDisable()
+    {
+        healthSystem.OnDamaged -= HealthSystem_OnDamageEnemy;
+        healthSystem.OnDead -= HealthSystem_OnDeadEnemy;
+    }
+
     private void Awake()
     {
+        healthSystem = new HealthSystem(enemySO.MaxHealth);
+        playerStatSystem = GetComponent<PlayerStatSystem>();
+        playerStatSystem.GetData(healthSystem, staminaSystem);
+
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         sword = GetComponentInChildren<EnemyHitController>().gameObject;
@@ -41,7 +59,6 @@ public class EnemyController : MonoBehaviour
     {
         SwitchStateEnemy(StateEnemy.Normal);
 
-        currentHealth = enemySO.MaxHealth;
         damage = enemySO.Damage;
     }
 
@@ -49,21 +66,7 @@ public class EnemyController : MonoBehaviour
     {
         Debug.DrawRay(transform.position + new Vector3(0, 1, 0), transform.forward * 1f, Color.green);
         EnemyStateMachine();
-
-        if (currentHealth < 0)
-        {
-            transform.gameObject.SetActive(false);
-        }
     }
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.red;
-    //    if (Physics.Raycast(transform.position + new Vector3(0, 1, 0), transform.forward,out var hit, 1, mask))
-    //    {
-    //        Debug.DrawRay(transform.position + new Vector3(0, 1, 0), transform.forward, Color.red);
-    //        Gizmos.DrawLine(transform.position + new Vector3(0, 1, 0), hit.point);
-    //    }
-    //}
 
     private void EnemyStateMachine()
     {
@@ -154,8 +157,15 @@ public class EnemyController : MonoBehaviour
         sword.GetComponent<BoxCollider>().enabled = false;
     }
 
-    public void ReceviedDamage(int damage)
+
+    // Health System
+    private void HealthSystem_OnDamageEnemy(object sender, System.EventArgs e)
     {
-        currentHealth -= damage;
+        SwitchStateEnemy(StateEnemy.OnHit);
+    }
+
+    private void HealthSystem_OnDeadEnemy(object sender, System.EventArgs e)
+    {
+        this.gameObject.SetActive(false);
     }
 }

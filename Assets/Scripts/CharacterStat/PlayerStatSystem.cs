@@ -2,18 +2,16 @@ using UnityEngine;
 
 public class PlayerStatSystem : MonoBehaviour, IGetHealthSystem, IGetStaminaSystem
 {
-    [SerializeField] private int healthMax = 100;
-    [SerializeField] private int staminaMax = 20;
+    //[SerializeField] private int healthMax = 100;
+    //[SerializeField] private int staminaMax = 20;
 
     private HealthSystem healthSystem;
     private StaminaSystem staminaSystem;
 
-    private void Awake()
+    public void GetData(HealthSystem healthSystem, StaminaSystem staminaSystem)
     {
-        healthSystem = new HealthSystem(healthMax);
-        staminaSystem = new StaminaSystem(staminaMax);
-
-        healthSystem.OnDead += HealthSystem_OnDead;
+        this.healthSystem = healthSystem;
+        this.staminaSystem = staminaSystem;
     }
 
     #region RELATE HEALTH
@@ -23,14 +21,9 @@ public class PlayerStatSystem : MonoBehaviour, IGetHealthSystem, IGetStaminaSyst
         healthSystem.Heal(healAmount);
     }
 
-    public void Takedamage(int damageAmount)
+    public void TakeDamage(int damageAmount)
     {
         healthSystem.Damage(damageAmount);
-    }
-
-    private void HealthSystem_OnDead(object sender, System.EventArgs e)
-    {
-        Debug.Log("PLAYER DIED");
     }
 
     public HealthSystem GetHealthSystem()

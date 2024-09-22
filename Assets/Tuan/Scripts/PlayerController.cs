@@ -28,24 +28,33 @@ public class PlayerController : MonoBehaviour
     private bool slash;
     private float currentSpeed;
 
+    private HealthSystem healthSystem;
+    private StaminaSystem staminaSystem;
+    private PlayerStatSystem playerStatSystem;
+
     // Info
-    [SerializeField, ReadOnly] private int currentHealth;
-    private int currentStamina;
     private int damage;
     public int Damage => damage;
 
     private void OnEnable()
     {
         this.inputActions.Enable();
+        healthSystem.OnDamaged += HealthSystem_OnDamagePlayer;
     }
 
     private void OnDisable()
     {
         this.inputActions.Disable();
+        healthSystem.OnDamaged -= HealthSystem_OnDamagePlayer;
     }
 
     private void Awake()
     {
+        healthSystem = new HealthSystem(playerSO.MaxHealth);
+        staminaSystem = new StaminaSystem(playerSO.MaxStamina);
+        playerStatSystem = GetComponent<PlayerStatSystem>();
+        playerStatSystem.GetData(healthSystem, staminaSystem);
+
         inputActions = new InputGameAction();
         animator = GetComponent<Animator>();
         SwitchStateAnim(StateAnim.Normal);
@@ -54,7 +63,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        currentHealth = playerSO.MaxHealth;
+        //currentHealth = playerSO.MaxHealth;
         damage = playerSO.Damage;
     }
 
@@ -202,8 +211,10 @@ public class PlayerController : MonoBehaviour
         sword.GetComponent<BoxCollider>().enabled = false;
     }
 
-    public void ReceiveDamage(int damage)
+
+    // Health System
+    private void HealthSystem_OnDamagePlayer(object sender, System.EventArgs e)
     {
-        currentHealth -= damage;
+        SwitchStateAnim(StateAnim.OnHit);
     }
 }

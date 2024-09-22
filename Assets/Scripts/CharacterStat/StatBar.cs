@@ -29,7 +29,7 @@ public class StatBar : MonoBehaviour
 
         if (type == StatType.Stamina)
             if (StaminaSystem.TryGetStaminaSystem(getStatSystemGameObject, out StaminaSystem staminaSystem))
-                SetStaminaSystem(staminaSystem);        
+                SetStaminaSystem(staminaSystem);
     }
 
     private void FixedUpdate()
