@@ -21,6 +21,11 @@ public class StatBar : MonoBehaviour
     private HealthSystem healthSystem;
     private StaminaSystem staminaSystem;
 
+    private void Awake()
+    {
+        getStatSystemGameObject = FindObjectOfType<PlayerController>().gameObject;
+    }
+
     private void Start()
     {
         if (type == StatType.Health)

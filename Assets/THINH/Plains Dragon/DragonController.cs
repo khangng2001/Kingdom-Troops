@@ -47,6 +47,7 @@ public class DragonController : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         DragonFire = GetComponent<DragonFire>();
+        Player = FindObjectOfType<PlayerController>().transform;
 
         ChangeState(DragonState.Ground);
 
