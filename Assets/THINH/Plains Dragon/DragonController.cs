@@ -51,6 +51,15 @@ public class DragonController : MonoBehaviour
         Player = FindObjectOfType<PlayerController>().transform;
 
         ChangeState(DragonState.Ground);
+        _groundState = DragonGroundState.RunToPoint;
+
+        Health = MaxHealth;
+    }
+
+    private void OnEnable()
+    {
+        ChangeState(DragonState.Ground);
+        _groundState = DragonGroundState.RunToPoint;
 
         Health = MaxHealth;
     }
