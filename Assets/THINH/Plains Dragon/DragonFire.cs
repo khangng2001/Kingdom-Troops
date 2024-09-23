@@ -22,7 +22,7 @@ public class DragonFire : MonoBehaviour
 
     public void Fire(Transform target)
     {
-        Vector3 directionToPlayer = (target.position + Vector3.up * 0.5f) - FireBallSpawnPoint.position;
+        Vector3 directionToPlayer = (target.position + Vector3.up * 1f) - FireBallSpawnPoint.position;
         foreach (Transform child in FireContain.transform)
         {
             if (!child.gameObject.activeSelf)
