@@ -28,4 +28,9 @@ public class RangeActiveTimeline : MonoBehaviour
 
         }
     }
+
+    public void LoadScene()
+    {
+        StartCoroutine(GameSceneLoading.Instance.LoadChildGame(StringConstants.MAIN, () => { }));
+    }
 }
