@@ -27,7 +27,10 @@ public class OptionsUIManager : MonoBehaviour
             DataManager.Instance.SaveGame();
 
             // Back to MainScene
-            StartCoroutine(GameSceneLoading.Instance.LoadChildGame(StringConstants.MAIN, () => {
+            StartCoroutine(GameSceneLoading.Instance.LoadChildGame(StringConstants.MAIN, () => 
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
             }));
         });
     }

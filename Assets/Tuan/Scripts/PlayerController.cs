@@ -267,7 +267,14 @@ public class PlayerController : MonoBehaviour
     {
 		youDie.gameObject.SetActive(true);
 		youDie.Play();
-	}
+
+        //Load To MainScene
+        StartCoroutine(GameSceneLoading.Instance.LoadChildGame(StringConstants.MAIN, () =>
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }));
+    }
 
     // Health System
     private void HealthSystem_OnDamagePlayer(object sender, System.EventArgs e)
