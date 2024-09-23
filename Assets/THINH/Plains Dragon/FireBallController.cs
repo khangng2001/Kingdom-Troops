@@ -33,13 +33,14 @@ public class FireBallController : MonoBehaviour
         {
             // Give Damage To Player
             other.GetComponent<PlayerStatSystem>().TakeDamage(Damage);
-        }
-        else
-        {
-            DragonFire.FireTrace(other.ClosestPoint(this.transform.position));
+            transform.gameObject.SetActive(false);
         }
 
-        transform.gameObject.SetActive(false);
+        if (other.CompareTag("Ground"))
+        {
+            DragonFire.FireTrace(other.ClosestPoint(this.transform.position));
+            transform.gameObject.SetActive(false);
+        }
     }
     
 }

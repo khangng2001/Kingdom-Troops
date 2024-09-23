@@ -7,6 +7,7 @@ TagManager:
   - Gate
   - Enemy
   - Boss
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -16,9 +17,9 @@ TagManager:
   - UI
   - Player
   - Enemy
-  - 
-  - 
-  - 
+  - Mesh
+  - Post
+  - Ground
   - 
   - 
   - 
