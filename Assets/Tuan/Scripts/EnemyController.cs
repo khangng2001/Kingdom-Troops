@@ -155,6 +155,7 @@ public class EnemyController : MonoBehaviour
             case StateEnemy.OnDead:
                 {
                     animator.SetTrigger("OnDead");
+                    this.gameObject.GetComponent<CharacterController>().enabled = false;
                     break;  
                 }
         }

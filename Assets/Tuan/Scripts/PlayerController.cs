@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -20,6 +21,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AnimationCurve curve;
     [SerializeField] private GameObject sword;
     [SerializeField] private PlayerSO playerSO;
+    [SerializeField] private Animation youDie;
 
     private InputGameAction inputActions;
     private Animator animator;
@@ -73,9 +75,11 @@ public class PlayerController : MonoBehaviour
         damage = playerSO.Damage;
 
         CanMove(true);
+
+        //StartCoroutine(StaminaRecovering());
     }
 
-    private void Update()
+	private void Update()
     {
         SetInput();
         movement = new Vector3(inputPlayer.x, 0f, inputPlayer.y);
@@ -85,6 +89,7 @@ public class PlayerController : MonoBehaviour
         //{
         //    SwitchStateAnim(StateAnim.BlockMove);
         //}
+
 
         StateMachine();
     }
@@ -160,7 +165,8 @@ public class PlayerController : MonoBehaviour
                 }
             case StateAnim.Slashing:
                 {
-                    break;
+					//playerStatSystem.UseStamina(10);
+					break;
                 }
             case StateAnim.Slash2:
                 {
@@ -172,7 +178,8 @@ public class PlayerController : MonoBehaviour
                 }
             case StateAnim.Slashing2:
                 {
-                    break;
+					//playerStatSystem.UseStamina(10);
+					break;
                 }
             case StateAnim.OnHit:
                 {
@@ -182,7 +189,8 @@ public class PlayerController : MonoBehaviour
             case StateAnim.OnDead:
                 {
                     animator.SetTrigger("OnDead");
-                    break;  
+                    transform.GetComponent<CharacterController>().enabled = false;
+					break;  
                 }
             case StateAnim.BlockMove:
                 {
@@ -238,6 +246,13 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("Speed", curve.Evaluate(currentSpeed));
     }
 
+    //private IEnumerator StaminaRecovering()
+    //{
+    //    yield return new WaitForSeconds(1);
+    //    playerStatSystem.Recovering(5);
+    //}
+
+
     public void EnableCollider()
     {
         sword.GetComponent<BoxCollider>().enabled = true;
@@ -247,6 +262,12 @@ public class PlayerController : MonoBehaviour
     {
         sword.GetComponent<BoxCollider>().enabled = false;
     }
+
+    public void ShowYouDie()
+    {
+		youDie.gameObject.SetActive(true);
+		youDie.Play();
+	}
 
     // Health System
     private void HealthSystem_OnDamagePlayer(object sender, System.EventArgs e)
