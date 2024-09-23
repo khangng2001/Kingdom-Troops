@@ -40,6 +40,8 @@ public class DragonController : MonoBehaviour
     public float Health;
 
     public GameObject RangeActiveEnd;
+    public GameObject Door_1;
+    public GameObject Door_2;
 
     private void Awake()
     {
@@ -104,6 +106,8 @@ public class DragonController : MonoBehaviour
                 break;
             case DragonState.Die:
                 RangeActiveEnd.SetActive(true);
+                Door_1.SetActive(false);
+                Door_2.SetActive(false);
                 this.enabled = false;
                 break;
         }
