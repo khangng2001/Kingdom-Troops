@@ -75,8 +75,6 @@ public class PlayerController : MonoBehaviour
         damage = playerSO.Damage;
 
         CanMove(true);
-
-        //StartCoroutine(StaminaRecovering());
     }
 
 	private void Update()
@@ -92,6 +90,12 @@ public class PlayerController : MonoBehaviour
 
 
         StateMachine();
+    }
+
+    private void FixedUpdate()
+    {
+        if (staminaSystem.GetStamina() < staminaSystem.GetStaminaMax())
+            StartCoroutine(StaminaRecovering());
     }
 
     private void StateMachine()
@@ -165,7 +169,7 @@ public class PlayerController : MonoBehaviour
                 }
             case StateAnim.Slashing:
                 {
-					//playerStatSystem.UseStamina(10);
+					playerStatSystem.UseStamina(10);
 					break;
                 }
             case StateAnim.Slash2:
@@ -178,7 +182,7 @@ public class PlayerController : MonoBehaviour
                 }
             case StateAnim.Slashing2:
                 {
-					//playerStatSystem.UseStamina(10);
+					playerStatSystem.UseStamina(10);
 					break;
                 }
             case StateAnim.OnHit:
@@ -246,11 +250,12 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("Speed", curve.Evaluate(currentSpeed));
     }
 
-    //private IEnumerator StaminaRecovering()
-    //{
-    //    yield return new WaitForSeconds(1);
-    //    playerStatSystem.Recovering(5);
-    //}
+    private IEnumerator StaminaRecovering()
+    {
+        yield return new WaitForSeconds(2);
+        if (staminaSystem.GetStamina() < staminaSystem.GetStaminaMax())
+            playerStatSystem.Recovering(5);
+    }
 
 
     public void EnableCollider()
@@ -267,7 +272,14 @@ public class PlayerController : MonoBehaviour
     {
 		youDie.gameObject.SetActive(true);
 		youDie.Play();
-	}
+
+        //Load To MainScene
+        StartCoroutine(GameSceneLoading.Instance.LoadChildGame(StringConstants.MAIN, () =>
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }));
+    }
 
     // Health System
     private void HealthSystem_OnDamagePlayer(object sender, System.EventArgs e)

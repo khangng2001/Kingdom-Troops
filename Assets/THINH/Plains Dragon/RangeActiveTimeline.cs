@@ -31,6 +31,10 @@ public class RangeActiveTimeline : MonoBehaviour
 
     public void LoadScene()
     {
-        StartCoroutine(GameSceneLoading.Instance.LoadChildGame(StringConstants.MAIN, () => { }));
+        StartCoroutine(GameSceneLoading.Instance.LoadChildGame(StringConstants.MAIN, () => 
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }));
     }
 }

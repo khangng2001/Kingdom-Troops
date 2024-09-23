@@ -40,8 +40,8 @@ public class MainSceneUIManager : MonoBehaviour
         //SceneLoader.LoadScene(GameManager.Instance.GameData.CurLevelMap, "");
         StartCoroutine(GameSceneLoading.Instance.LoadChildGame(GameManager.Instance.GameData.CurLevelMap, () =>
         {
-            //Play Music in GamePlay
-            Debug.Log(">>Play GamePlay music");
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }));
     }
 
@@ -51,8 +51,8 @@ public class MainSceneUIManager : MonoBehaviour
         //SceneLoader.LoadScene(GameManager.Instance.GameData.CurLevelMap, "");
         StartCoroutine(GameSceneLoading.Instance.LoadChildGame(GameManager.Instance.GameData.CurLevelMap, () =>
         {
-            //Play Music in GamePlay
-            Debug.Log(">>Play GamePlay music");
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }));
     }
 
