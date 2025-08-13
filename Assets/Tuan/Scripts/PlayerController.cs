@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -75,6 +75,9 @@ public class PlayerController : MonoBehaviour
         damage = playerSO.Damage;
 
         CanMove(true);
+
+        Cursor.lockState = CursorLockMode.Locked; // Khóa vào giữa màn hình
+        Cursor.visible = false; // Ẩn chuột
     }
 
 	private void Update()
